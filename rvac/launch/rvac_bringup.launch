@@ -1,0 +1,26 @@
+<launch>
+				<!--  ************** Odometry ***************  -->
+	<arg name="gui" default="True" />
+	<param name="use_gui" value="$(arg gui)"/>
+	<param name="robot_description" command="cat $(find rvac)/urdf/rvac.urdf" />
+	
+	<node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher" />
+	
+	<node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" />
+	
+	
+		
+	<node name="OdomTf" pkg="rvac" type="OdomTf.py" />
+	
+	<node type="rviz" name="rviz" pkg="rviz" args="-d $(find rvac)/rviz/config_file.rviz" />
+	
+	<node name="teleop_twist_keyboard" pkg="teleop_twist_keyboard" type="teleop_twist_keyboard.py" />
+	
+	<node name="serial_node" pkg="rosserial_python" type="serial_node.py">
+		<param name="port" value="/dev/ttyUSB0"/>
+	</node>
+		
+		
+		
+	
+</launch>
