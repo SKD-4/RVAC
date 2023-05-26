@@ -29,3 +29,5 @@ By default it is sketchbook/libraries in your home directory."
 The code Subscribes to the cmd_vel topic to get the velocity information converting it into Left and right velocities and figuring out the Required step delay by taking a ratio of a specific step delay for a specific speed
 
 StepDelayReq = (RandomStepDelay * SpeedAtThatRandomStepDelay)/SpeedRequired
+
+(Still being written Check back later for updates!)
