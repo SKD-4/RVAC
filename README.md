@@ -20,4 +20,9 @@ This will reduce probability of breaking existing libraries structure."
   cd ~/rosserial_libs
   rosrun rosserial_arduino make_libraries.py .
   
-"The last command will generate ros_lib directory, which contains ROS message and ROS API headers. Now it’s time to copy generated ros_lib directory to the Arduino libraries folder. By default it is sketchbook/libraries in your home directory."
+"The last command will generate ros_lib directory, which contains ROS message and ROS API headers. Now it’s time to copy generated ros_lib directory to the Arduino libraries folder.
+By default it is sketchbook/libraries in your home directory."
+
+The code Subscribes to the cmd_vel topic to get the velocity information converting it into Left and right velocities and figuring out the Required step delay by taking a ratio of a specific step delay for a specific speed
+
+StepDelayReq = (RandomStepDelay * SpeedAtThatRandomStepDelay)/SpeedRequired
