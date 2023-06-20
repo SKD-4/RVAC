@@ -60,11 +60,13 @@ Next up , I describe most of the working behind the project in the video but you
 
 Most of the code and files from the RVAC ROS Package is from the Nox Robot project , just like in James bruton's series with a major change being how we're dealing with Odometry and Transform.
 Since that projects code is made to receive actual odometry input from the wheel encoders compared to the stepper motors I used in RVAC for cost and availability reasons I wrote the different simpler arduino code ,
-along with the OdomTf.py script which takes cmd_vel information and calculated odom and tf assuming the robot moved exactly as it was instructed to.
+along with the OdomTf.py script which takes cmd_vel information and calculates odom and tf assuming that the robot moved exactly as it was instructed to.
 
 Which never happens in real life , so this would result in a higher odometric drift , but i went with it anyways to see if I could get away using the precise stepper motors and LiDAR.
 
 Here's some information about some of the files in the package requiring attention-
+
+
 
 Cfg
 
@@ -82,11 +84,26 @@ The launch file folder has all the launch files used to run all the nodes and ad
 The main ones are -
 rvac_bringup.launch to Get it running with teleop which lets you control it from your keyboard (teleop_twist_keyboard node)
 rvac_navigation.launch to run everything for navigation . This launch file runs the map server which is the node that makes a pre existing map available to all the nodes to use.
+Since this method of odometry does not use actual sensor input for odometry I often comment out the rosserial arduino lines from the launch files if i need to test the software without
+running the robot (This is what rvac_bringup_noserial.launch is).
 
 Map Server
 In the package folder there is an Empty map pgm and its yaml file , this is just to represent an open world with no obstacles that I used to get the planner working .
 For the house map , since I still have to add the LiDAR Sensor to be able to use SLAM and map the house , I used a screenshot of the map created by a robot vacuum cleaner I already have from Xiaomi and traced it out in paint.
 In the yaml file apart from the image location you have to specify resolution in the form of meters per pixel , for this use a tape a measure to measure the distance between any 2 far apart walls and after converting it into meters divide it by the number of pixels between the 2 walls in the image.
 
+URDF - Not important until LiDAR is mounted , provides information regarding where different parts of the robot like the lidar is with respect to the center of the robot.
 
-(Still being written Check back later for updates!)
+Cmakeslist text file - any python scripts that are made to be used as nodes first have to be made into executable files by opening the folder in terminal and running the following
+    chmod +x myscript.py
+along with adding the following lines at the end of the text file before running catkin_make
+
+catkin_install_python(PROGRAMS scripts/OdomTf.py
+  DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
+
+
+
+
+
+
+That should be it! Let me know if I missed anything or if you have any questions.
